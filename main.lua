@@ -152,6 +152,18 @@ function HebrewPlugin:init()
     end)
 end
 
+--- Checks whether a given BCP 47 / ISO language code represents Hebrew.
+-- Called by `languageSupport._findAndCallPlugin`.
+-- @param language_code string Language tag (e.g., `"he"`, `"iw"`, `"heb"`, `"he-IL"`).
+-- @return boolean `true` if the primary subtag is `"he"`, `"iw"` (legacy ISO 639-1),
+--                 or `"heb"` (ISO 639-2/3), including regional/script variants
+--                 (e.g., `"he-IL"`, `"he_IL"`); `false` otherwise.
+function HebrewPlugin:supportsLanguage(language_code)
+    if type(language_code) ~= "string" then return false end
+    local base = language_code:lower():match("^(%a+)")
+    return base == "he" or base == "iw" or base == "heb"
+end
+
 -- Called by languagesupport.extraDictionaryFormCandidates before every lookup.
 -- @param args  table with field `text` (string)
 -- @return      array of candidate strings, or nil
